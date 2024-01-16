@@ -28,7 +28,7 @@ def before_request():
     """
     if auth is None:
         pass
-    else:    
+    else:
         excluded = [
                 '/api/v1/status/',
                 '/api/v1/unauthorized/',
