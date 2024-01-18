@@ -7,22 +7,31 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
+from api.v1.auth.session_exp_auth import SessionExpAuth # Import the SessionExpAuth class
 
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
+
 auth = None
 AUTH_TYPE = os.getenv("AUTH_TYPE")
-if AUTH_TYPE == "auth":
-    from api.v1.auth.auth import Auth
-    auth = Auth()
-elif AUTH_TYPE == "basic_auth":
-    from api.v1.auth.basic_auth import BasicAuth
-    auth = BasicAuth()
-elif AUTH_TYPE == "session_auth":
-    from api.v1.auth.session_auth import SessionAuth
-    auth = SessionAuth()
+
+# Use SessionExpAuth if AUTH_TYPE is session_exp_auth
+if AUTH_TYPE == "session_exp_auth":
+    auth = SessionExpAuth()
+else:
+    # Continue with your existing logic for other authentication types
+    if AUTH_TYPE == "auth":
+        from api.v1.auth.auth import Auth
+        auth = Auth()
+    elif AUTH_TYPE == "basic_auth":
+        from api.v1.auth.basic_auth import BasicAuth
+        auth = BasicAuth()
+    elif AUTH_TYPE == "session_auth":
+        from api.v1.auth.session_auth import SessionAuth
+        auth = SessionAuth()
 
 
 @app.before_request
@@ -33,11 +42,11 @@ def before_request():
         pass
     else:
         excluded = [
-                '/api/v1/status/',
-                '/api/v1/unauthorized/',
-                '/api/v1/forbidden/',
-                '/api/v1/auth_session/login/'
-            ]
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
+        ]
         if auth.require_auth(request.path, excluded):
             cookie = auth.session_cookie(request)
             if auth.authorization_header(request) is None and cookie is None:
