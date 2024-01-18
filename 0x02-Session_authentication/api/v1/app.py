@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
-from api.v1.auth.session_exp_auth import SessionExpAuth # Import the SessionExpAuth class
+from api.v1.auth.session_exp_auth import SessionExpAuth
 
 
 app = Flask(__name__)
