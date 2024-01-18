@@ -18,11 +18,11 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 AUTH_TYPE = os.getenv("AUTH_TYPE")
 
-# Use SessionExpAuth if AUTH_TYPE is session_exp_auth
-if AUTH_TYPE == "session_exp_auth":
-    auth = SessionExpAuth()
+if AUTH_TYPE == "session_db_auth":
+    from api.v1.auth.session_db_auth import SessionDBAuth
+    auth = SessionDBAuth()
 else:
-    # Continue with your existing logic for other authentication types
+    # Continue with existing logic for other authentication types
     if AUTH_TYPE == "auth":
         from api.v1.auth.auth import Auth
         auth = Auth()
