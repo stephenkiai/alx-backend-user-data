@@ -3,12 +3,14 @@ from api.v1.auth.session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
 from uuid import uuid4
 
+
 class SessionDBAuth(SessionExpAuth):
     """ SessionDBAuth class
     """
 
     def create_session(self, user_id=None):
-        """ Creates and stores a new instance of UserSession and returns the Session ID
+        """ Creates and stores a new instance of UserSession and
+        returns the Session ID
         """
         if user_id is None:
             return None
@@ -21,12 +23,14 @@ class SessionDBAuth(SessionExpAuth):
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """ Returns the User ID by requesting UserSession in the database based on session_id
+        """ Returns the User ID by requesting UserSession in the
+        database based on session_id
         """
         if session_id is None:
             return None
 
-        user_session = self._session.query(UserSession).filter_by(session_id=session_id).first()
+        user_session = self._session.query
+        (UserSession).filter_by(session_id=session_id).first()
 
         if user_session is None or self.session_duration <= 0:
             return None
@@ -40,7 +44,8 @@ class SessionDBAuth(SessionExpAuth):
         return user_session.user_id
 
     def destroy_session(self, request=None):
-        """ Destroys the UserSession based on the Session ID from the request cookie
+        """ Destroys the UserSession based on the Session ID from the
+        request cookie
         """
         if request is None:
             return False
@@ -49,7 +54,8 @@ class SessionDBAuth(SessionExpAuth):
         if session_cookie is None:
             return False
 
-        user_session = self._session.query(UserSession).filter_by(session_id=session_cookie).first()
+        user_session = self._session.query
+        (UserSession).filter_by(session_id=session_cookie).first()
         if user_session is None:
             return False
 

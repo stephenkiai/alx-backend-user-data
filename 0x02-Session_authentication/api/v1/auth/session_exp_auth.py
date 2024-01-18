@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from os import getenv
 from uuid import uuid4
 
+
 class SessionExpAuth(SessionAuth):
     ''' creating a new authentication mechanism with session expiration
     '''
